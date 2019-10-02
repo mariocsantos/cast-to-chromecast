@@ -1,18 +1,26 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 
-const path = require('path');
 const url = require('url');
+const path = require('path');
 const isDev = require('electron-is-dev');
 
-let mainWindow;
+let main;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ show: false });
-  mainWindow.maximize();
-  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-  mainWindow.on('closed', () => mainWindow = null);
+  main = new BrowserWindow({ 
+    show: false,
+    webPreferences: {
+      // nodeIntegration: false,
+      preload: __dirname + '/preload.js'
+    }
+  });
+  main.maximize();
+  main.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  
+  main.on('closed', () => main = null);
+
+  registerListeners();
+
 }
 
 app.on('ready', createWindow);
@@ -24,7 +32,21 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (main === null) {
     createWindow();
   }
 });
+
+function registerListeners() {
+  ipcMain.on('open-folder', (event, arg) => {
+    dialog.showOpenDialog(main, {
+      properties: ['openDirectory', 'openFile', 'multiSelections']
+    }, (files) => {
+      if (!files) {
+        return;
+      }
+
+      event.reply('files-to-queue', files);
+    });
+  });
+}

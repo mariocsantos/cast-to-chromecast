@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import isElectron from 'is-electron';
+
+const { ipcRenderer }: any = window;
 
 function App() {
+  
+  if (isElectron()) {
+    ipcRenderer.on('files-to-queue', (event: any, arg: any) => {
+      alert(arg);
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          React and electron 👊.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={openFolder}>Click me to add your videos</button>
     </div>
   );
+}
+
+function openFolder() {
+  if (!isElectron()) {
+    return;
+  }
+
+  ipcRenderer.send('open-folder');
 }
 
 export default App;
