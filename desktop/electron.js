@@ -15,6 +15,10 @@ function createWindow() {
   });
   main.maximize();
   main.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+
+  if (isDev) {
+    main.webContents.openDevTools();
+  }
   
   main.on('closed', () => main = null);
 
@@ -39,7 +43,7 @@ app.on('activate', () => {
 function registerListeners() {
   ipcMain.on('open-folder', (event, arg) => {
     dialog.showOpenDialog(main, {
-      properties: ['openDirectory', 'openFile', 'multiSelections']
+      properties: ['openFile', 'multiSelections']
     }, (files) => {
       if (!files) {
         return;

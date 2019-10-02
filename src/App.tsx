@@ -5,11 +5,10 @@ import isElectron from 'is-electron';
 const { ipcRenderer } = window;
 
 function App() {
-  console.log(ipcRenderer)
   if (isElectron()) {
-    // ipcRenderer.on('files-to-queue', (event: any, arg: any) => {
-    //   alert(arg);
-    // });
+    ipcRenderer.on('files-to-queue', (event: any, arg: any) => {
+      console.log(arg);
+    });
   }
 
   return (
@@ -24,7 +23,7 @@ function openFolder() {
     return;
   }
 
-  // ipcRenderer.send('open-folder');
+  ipcRenderer.send('open-folder');
 }
 
 export default App;
