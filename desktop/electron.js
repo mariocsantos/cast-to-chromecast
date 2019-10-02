@@ -10,7 +10,6 @@ function createWindow() {
   main = new BrowserWindow({ 
     show: false,
     webPreferences: {
-      // nodeIntegration: false,
       preload: __dirname + '/preload.js'
     }
   });
