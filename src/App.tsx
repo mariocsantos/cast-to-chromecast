@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import isElectron from 'is-electron';
 
-const { ipcRenderer }: any = window;
+const { ipcRenderer } = window;
 
 function App() {
   
