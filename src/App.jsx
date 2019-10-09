@@ -34,9 +34,4 @@ function openFolder() {
   ipcRenderer.send('open-folder');
 }
 
-function getCastButton() {
-  const button = document.createElement("google-cast-launcher");
-  return button;
-}
-
 export default App;
