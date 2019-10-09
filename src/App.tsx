@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
 import isElectron from 'is-electron';
+import React from 'react';
+import './App.scss';
 
 const { ipcRenderer } = window;
 
