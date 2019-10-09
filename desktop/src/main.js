@@ -12,11 +12,12 @@ const main = {
 module.exports = main;
 
 function createWindow() {
+  console.log(__dirname)
   // Browser config
   main.window = new BrowserWindow({
     show: false,
     webPreferences: {
-      preload: __dirname + '/preload.js'
+      preload: path.join(__dirname, '../preload.js')
     }
   });
 
